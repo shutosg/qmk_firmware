@@ -326,7 +326,7 @@ void oled_render(void) {
     }
 
     // Turn on display if it is off
-    oled_on();
+    // oled_on();
 
     // Clear dirty flag
     oled_dirty &= ~((OLED_BLOCK_TYPE)1 << update_start);
