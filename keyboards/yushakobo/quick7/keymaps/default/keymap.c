@@ -23,20 +23,21 @@ enum layer_names {
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
-    YUSHAURL = SAFE_RANGE
+    YUSHAURL = SAFE_RANGE//,
+    // LIGHT_OFF
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
-        KC_MUTE,   MO(_FUNC1), RGB_MOD,
-        S(KC_TAB), KC_UP,      KC_TAB,
-        KC_LEFT,   KC_DOWN,    KC_RGHT
+        KC_LSFT, KC_LALT, MO(_FUNC1),
+        KC_HOME,   KC_UP,    KC_END,
+        KC_LEFT,   KC_DOWN,  KC_RGHT
     ),
     [_FUNC1] = LAYOUT(
-        RESET,   KC_TRNS, RGB_TOG,
-        KC_HOME, KC_VOLU, KC_END,
-        KC_MPRV, KC_VOLD, KC_MNXT
+        RESET,   KC_NO, KC_NO,
+        KC_NO, KC_NO, KC_NO,
+        KC_NO, KC_NO, KC_NO
     )
 };
 
@@ -50,6 +51,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // when keycode QMKURL is released
             }
             break;
+        // case LIGHT_OFF:
+        //     if (record->event.pressed) {
+        //         tap_code(RGB_TOG);
+        //     }
+        //     break;
     }
     return true;
 }
@@ -63,10 +69,26 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         }
     }
     else if (index == 1) { // Right encoder
-        if (clockwise) {
-            rgblight_decrease_hue_noeeprom();
-        } else {
-            rgblight_increase_hue_noeeprom();
+        switch (get_highest_layer(layer_state))
+        {
+            case _BASE:
+                if (clockwise) {
+                    // rgblight_decrease_hue_noeeprom();
+                    tap_code(KC__VOLUP);
+                } else {
+                    // rgblight_increase_hue_noeeprom();
+                    tap_code(KC__VOLDOWN);
+                }
+                break;
+            case _FUNC1:
+                if (clockwise) {
+                    // rgblight_decrease_hue_noeeprom();
+                    tap_code(KC_BRIU);
+                } else {
+                    // rgblight_increase_hue_noeeprom();
+                    tap_code(KC_BRID);
+                }
+                break;
         }
     }
 }
