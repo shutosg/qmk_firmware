@@ -32,6 +32,7 @@
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
   _BASE = 0,
+  _WIN,
   _SUB,
   _FUNC,
   _ADJUST
@@ -61,7 +62,10 @@ void render_status(void) {
 
   switch (get_highest_layer(layer_state)) {
       case _BASE:
-          oled_write_P(PSTR("Base\n"), false);
+          oled_write_P(PSTR("Mac\n"), false);
+          break;
+      case _WIN:
+          oled_write_P(PSTR("Win\n"), false);
           break;
       case _SUB:
           oled_write_P(PSTR("Sub\n"), false);
